@@ -27,7 +27,13 @@ class Comic(scrapy.Item):
 
 # 章节数据
 class Chapter(scrapy.Item):
+    """漫画数据"""
+    comic = scrapy.Field()
+
     """章节名"""
     name = scrapy.Field()
 
     pic_list = scrapy.Field()
+
+    """章节封面图"""
+    cover = scrapy.Field()
