@@ -26,6 +26,7 @@ DOWNLOADER_MIDDLEWARES = {
     # 'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
     'mkz.middlewares.CustomUserAgentMiddleware': 545,
     'mkz.middlewares.DownloadLoggerMiddleware': 555,
+    # 'mkz.middlewares.HttpProxyMiddleware': 100,
 }
 
 EXTENSIONS = {

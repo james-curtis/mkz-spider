@@ -7,6 +7,7 @@ import json.decoder
 import scrapy
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from urllib.parse import urlencode
 from .spiders.mkzSpider import spider_name
 
 
@@ -16,6 +17,9 @@ from .spiders.mkzSpider import spider_name
 
 class MkzPipeline:
     file = None
+    common_headers = {
+        'Content-Type': "application/x-www-form-urlencoded"
+    }
 
     def __init__(self, comic_publish_url, chapter_publish_url, pwd, crawler):
         self.comic_publish_url = comic_publish_url
@@ -65,8 +69,9 @@ class MkzPipeline:
             'author': adapter.get('author'),
             'serialize': adapter.get('status'),
         }
-        req = scrapy.http.JsonRequest(self.comic_publish_url, data=data, callback=self.record_comic_log,
-                                      cb_kwargs={'data': data, 'item': item, 'logger': spider.logger})
+        req = scrapy.http.Request(self.comic_publish_url, body=urlencode(data), method='POST',
+                                  callback=self.record_comic_log, headers=self.common_headers,
+                                  cb_kwargs={'data': data, 'item': item, 'logger': spider.logger})
         self.crawler.engine.crawl(req, spider)
         # response = self.requests.post(self.comic_publish_url, data)
         # self.record_comic_log(spider, response, data, item)
@@ -103,8 +108,9 @@ class MkzPipeline:
             'pic': pic,
             'xid': adapter.get('id'),
         }
-        req = scrapy.http.JsonRequest(self.chapter_publish_url, data=data, callback=self.record_chapter_log,
-                                      cb_kwargs={'data': data, 'item': item, 'logger': spider.logger})
+        req = scrapy.http.Request(self.chapter_publish_url, body=urlencode(data), callback=self.record_chapter_log,
+                                  headers=self.common_headers, method='POST',
+                                  cb_kwargs={'data': data, 'item': item, 'logger': spider.logger})
         self.crawler.engine.crawl(req, spider)
         # response = self.requests.post(self.chapter_publish_url, data)
         # self.record_chapter_log(spider, response, data, item)
