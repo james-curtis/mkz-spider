@@ -17,8 +17,10 @@ class MkzspiderSpider(scrapy.Spider):
             # print("parse {}".format(self.comic_id))
             yield scrapy.Request(response.urljoin(comic.get()), callback=self.parseComicInfo,
                                  cb_kwargs={'comic_data': comic_data, 'comic_id': comic_id})
-        if response.xpath("//a[@class='next']/@href").get() is not None:
-            yield response.follow(response.xpath("//a[@class='next']/@href").get(), callback=self.parse)
+        current_page = response.urljoin(response.xpath("//a[@class='next']/@href").get())
+        if current_page is not None:
+            # self.logger.info('正在请求页面：{url}'.format(url=current_page))
+            yield response.follow(current_page, callback=self.parse)
 
     def parseComicInfo(self, response, comic_id, comic_data):
         comic_data['name'] = response.xpath("//p[@class='comic-title j-comic-title']/text()").get()
@@ -37,18 +39,6 @@ class MkzspiderSpider(scrapy.Spider):
 
         yield scrapy.Request(ApiConfig.chapterList(comic_id), callback=self.parseChapterList,
                              cb_kwargs={'comic_data': comic_data, 'comic_id': comic_id})
-
-        # chapter_list = response.xpath("//li[contains(@class,'j-chapter-item')]")
-        # for chapter in chapter_list:
-        #     self.chapter_data = Chapter()
-        #     self.chapter_data['name'] = chapter.xpath('//a/text()').get()
-        #     self.chapter_data['comic'] = self.comic_data
-        #     self.chapter_id = chapter.xpath('//a/@data-chapterid').get()
-        #     # print("parseComicInfo {} {}".format(self.comic_id, self.chapter_id))
-        #     # yield response.follow(chapter.xpath('//a/@href').get(),
-        #     #                       callback=self.parseChapterContent)
-        #     yield response.follow(ApiConfig.chapterContent(self.comic_id, self.chapter_id),
-        #                           callback=self.parseChapterContent)
 
     def parseChapterList(self, response, comic_id, comic_data):
         data = response.json()

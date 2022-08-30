@@ -4,36 +4,41 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 import json.decoder
 
+import scrapy
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 from .spiders.mkzSpider import spider_name
+
+
 # import pymongo
-from scrapeops_python_requests.scrapeops_requests import ScrapeOpsRequests
+# from scrapeops_python_requests.scrapeops_requests import ScrapeOpsRequests
 
 
 class MkzPipeline:
     file = None
 
-    def __init__(self, comic_publish_url, chapter_publish_url, pwd, scrapeops_logger, requests):
+    def __init__(self, comic_publish_url, chapter_publish_url, pwd, crawler):
         self.comic_publish_url = comic_publish_url
         self.chapter_publish_url = chapter_publish_url
         self.pwd = pwd
-        self.scrapeops_logger = scrapeops_logger
-        self.requests = requests
+        # self.scrapeops_logger = scrapeops_logger
+        # self.requests = requests
+        self.crawler = crawler
 
     @classmethod
     def from_crawler(cls, crawler):
-        scrapeops_logger = ScrapeOpsRequests(
-            scrapeops_api_key=crawler.settings.get('SCRAPEOPS_API_KEY'),
-            spider_name=spider_name,
-            job_name='漫画发布',
-        )
+        # scrapeops_logger = ScrapeOpsRequests(
+        #     scrapeops_api_key=crawler.settings.get('SCRAPEOPS_API_KEY'),
+        #     spider_name=spider_name,
+        #     job_name='漫画发布',
+        # )
         return cls(
             comic_publish_url=crawler.settings.get('COMIC_PUBLISH_URL'),
             chapter_publish_url=crawler.settings.get('CHAPTER_PUBLISH_URL'),
             pwd=crawler.settings.get('PUBLISH_PWD'),
-            scrapeops_logger=scrapeops_logger,
-            requests=scrapeops_logger.RequestsWrapper()
+            # scrapeops_logger=scrapeops_logger,
+            # requests=scrapeops_logger.RequestsWrapper(),
+            crawler=crawler
         )
 
     def process_item(self, item, spider):
@@ -60,29 +65,27 @@ class MkzPipeline:
             'author': adapter.get('author'),
             'serialize': adapter.get('status'),
         }
-        response = self.requests.post(self.comic_publish_url, data)
-        self.record_comic_log(spider, response, data, item)
+        req = scrapy.http.JsonRequest(self.comic_publish_url, data=data, callback=self.record_comic_log,
+                                      cb_kwargs={'data': data, 'item': item, 'logger': spider.logger})
+        self.crawler.engine.crawl(req, spider)
+        # response = self.requests.post(self.comic_publish_url, data)
+        # self.record_comic_log(spider, response, data, item)
 
-    def record_comic_log(self, spider, response, data, item):
+    def record_comic_log(self, spider, data, item, logger):
         def output_log(level, msg):
             log_msg = 'comic_id:{} comic_name:{} {msg}'.format(item.get('id'), item.get('name'), msg=msg)
             if level == 'error':
-                spider.logger.error(log_msg)
+                logger.error(log_msg)
             else:
-                spider.logger.info(log_msg)
+                logger.info(log_msg)
 
         try:
-            if response.json()['code'] == 1:
-                output_log('info', response.text)
+            if spider.json()['code'] == 1:
+                output_log('info', spider.text)
             else:
                 output_log('error', '漫画入库失败')
         except json.decoder.JSONDecodeError:
             output_log('error', '漫画入库失败')
-
-        self.scrapeops_logger.item_scraped(
-            item=data,
-            response=response,
-        )
 
     def chapter_publish(self, item, spider):
         adapter = ItemAdapter(item)
@@ -100,10 +103,13 @@ class MkzPipeline:
             'pic': pic,
             'xid': adapter.get('id'),
         }
-        response = self.requests.post(self.chapter_publish_url, data)
-        self.record_chapter_log(spider, response, data, item)
+        req = scrapy.http.JsonRequest(self.comic_publish_url, data=data, callback=self.record_comic_log,
+                                      cb_kwargs={'data': data, 'item': item, 'logger': spider.logger})
+        self.crawler.engine.crawl(req, spider)
+        # response = self.requests.post(self.chapter_publish_url, data)
+        # self.record_chapter_log(spider, response, data, item)
 
-    def record_chapter_log(self, spider, response, data, item):
+    def record_chapter_log(self, spider, data, item, logger):
         def output_log(level, msg):
             log_msg = 'comic_id:{comic_id} chapter_id:{chapter_id} comic_name:{comic_name} chapter_name:{chapter_name} {msg}'.format(
                 comic_id=item.get('comic')['id'],
@@ -112,22 +118,22 @@ class MkzPipeline:
                 chapter_name=item.get('name'),
                 msg=msg)
             if level == 'error':
-                spider.logger.error(log_msg)
+                logger.error(log_msg)
             else:
-                spider.logger.info(log_msg)
+                logger.info(log_msg)
 
         try:
-            if response.json()['code'] == 1:
-                output_log('info', response.text)
+            if spider.json()['code'] == 1:
+                output_log('info', spider.text)
             else:
                 output_log('error', '章节入库失败')
         except json.decoder.JSONDecodeError:
             output_log('error', '章节入库失败')
 
-        self.scrapeops_logger.item_scraped(
-            item=data,
-            response=response,
-        )
+        # self.scrapeops_logger.item_scraped(
+        #     item=data,
+        #     response=response,
+        # )
 
 # class MongoPipeline:
 #
