@@ -37,3 +37,9 @@ engine.unpause()
 ```shell
 scrapy crawl mkzSpider -s COMIC_PUBLISH_URL="http://chshcms.cc/index.php/api/receive/comic" -s CHAPTER_PUBLISH_URL="http://chshcms.cc/index.php/api/receive/chapter" -s PUBLISH_PWD="111111" -s SCRAPEOPS_API_KEY="4948e297-23ea-4f50-a670-0cf52c32a8dd" 
 ```
+
+## 速度
+
+8000页面/分钟，4000章节/分钟
+
+![](https://tva1.sinaimg.cn/large/008d89Swgy1h5p3sw7h6yj30v604zag3.jpg)
