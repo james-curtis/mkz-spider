@@ -103,7 +103,7 @@ class MkzPipeline:
             'pic': pic,
             'xid': adapter.get('id'),
         }
-        req = scrapy.http.JsonRequest(self.comic_publish_url, data=data, callback=self.record_comic_log,
+        req = scrapy.http.JsonRequest(self.chapter_publish_url, data=data, callback=self.record_chapter_log,
                                       cb_kwargs={'data': data, 'item': item, 'logger': spider.logger})
         self.crawler.engine.crawl(req, spider)
         # response = self.requests.post(self.chapter_publish_url, data)
