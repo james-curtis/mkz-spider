@@ -6,6 +6,7 @@ import json.decoder
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from .spiders.mkzSpider import spider_name
 # import pymongo
 from scrapeops_python_requests.scrapeops_requests import ScrapeOpsRequests
 
@@ -24,7 +25,7 @@ class MkzPipeline:
     def from_crawler(cls, crawler):
         scrapeops_logger = ScrapeOpsRequests(
             scrapeops_api_key=crawler.settings.get('SCRAPEOPS_API_KEY'),
-            spider_name=crawler.spider.name,
+            spider_name=spider_name,
             job_name='漫画发布',
         )
         return cls(
