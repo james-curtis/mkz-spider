@@ -40,9 +40,9 @@ scrapy crawl mkzSpider -s COMIC_PUBLISH_URL="http://chshcms.cc/index.php/api/rec
 
 ## 速度
 
-8000页面/分钟，4000章节/分钟
+三万页面/分钟，三万章节/分钟
 
-![](https://tva1.sinaimg.cn/large/008d89Swgy1h5p3sw7h6yj30v604zag3.jpg)
+![](https://tva1.sinaimg.cn/large/008d89Swgy1h5p6ewlr8vj311w07sdvn.jpg)
 
 ## 发布报错
 
