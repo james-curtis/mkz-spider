@@ -43,3 +43,29 @@ scrapy crawl mkzSpider -s COMIC_PUBLISH_URL="http://chshcms.cc/index.php/api/rec
 8000页面/分钟，4000章节/分钟
 
 ![](https://tva1.sinaimg.cn/large/008d89Swgy1h5p3sw7h6yj30v604zag3.jpg)
+
+## 发布报错
+
+在这个文件中增加两行 `sys/apps/controllers/api/Receive.php` 
+
+大概在302行左右
+```diff
+//更新TAGS主题
+private function get_set_tags($tarr, $mid = 0)
+{
+    foreach ($tarr as $v) {
+        $row = $this->mcdb->get_row('type', 'id', array('name' => $v, 'zd' => 'tags'));
+        if (!$row) {
+            //获取最大ID
+            $row = $this->mcdb->get_row('type', 'id', array('zd' => 'tags'), 'xid DESC');
+            $tid = $this->mcdb->get_insert('type', array('name' => $v, 'zd' => 'tags', 'fid' => 1, 'cid' => 1, 'xid' => ($row->id + 1)));
+        } else {
+            $tid = $row->id;
+        }
++        $row = $this->mcdb->get_row('comic_type', 'id', array('tid' => $tid, 'mid' => $mid));
++         if (!$row)
+            $this->mcdb->get_insert('comic_type', array('tid' => $tid, 'mid' => $mid));
+    }
+    return true;
+}
+```
