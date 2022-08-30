@@ -11,6 +11,7 @@ BOT_NAME = 'mkz'
 
 SPIDER_MODULES = ['mkz.spiders']
 NEWSPIDER_MODULE = 'mkz.spiders'
+LOGSTATS_INTERVAL = 3
 
 # DUPEFILTER_DEBUG = True
 # SCHEDULER_DEBUG = True
@@ -65,6 +66,7 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
     'mkz.middlewares.CustomUserAgentMiddleware': 545,
+    'mkz.middlewares.DownloadLoggerMiddleware': 555,
 }
 
 # Enable or disable extensions
