@@ -13,6 +13,9 @@ SPIDER_MODULES = ['mkz.spiders']
 NEWSPIDER_MODULE = 'mkz.spiders'
 
 DUPEFILTER_DEBUG = True
+SCHEDULER_DEBUG = True
+
+# LOG_LEVEL = 'INFO'
 
 # DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 
@@ -23,21 +26,23 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 1
+# CONCURRENT_REQUESTS = 1
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1
+# DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
-CONCURRENT_REQUESTS_PER_DOMAIN = 1
-CONCURRENT_REQUESTS_PER_IP = 1
+# CONCURRENT_REQUESTS_PER_DOMAIN = 1
+# CONCURRENT_REQUESTS_PER_IP = 1
 
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
-# TELNETCONSOLE_ENABLED = False
+TELNETCONSOLE_ENABLED = True
+TELNETCONSOLE_USERNAME = 'scrapy'
+TELNETCONSOLE_PASSWORD = 'scrapy'
 
 # Override the default request headers:
 # DEFAULT_REQUEST_HEADERS = {
@@ -67,6 +72,7 @@ CONCURRENT_REQUESTS_PER_IP = 1
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'mkz.pipelines.MkzPipeline': 300,
+    # 'mkz.pipelines.MongoPipeline': 301,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -89,3 +95,9 @@ ITEM_PIPELINES = {
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+MONGO_URI = 'mongodb://192.168.44.153:27017/'
+
+COMIC_PUBLISH_URL = 'http://chshcms.cc/index.php/api/receive/comic'
+CHAPTER_PUBLISH_URL = 'http://chshcms.cc/index.php/api/receive/chapter'
+PUBLISH_PWD = '111111'
