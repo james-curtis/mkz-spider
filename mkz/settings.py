@@ -12,8 +12,8 @@ BOT_NAME = 'mkz'
 SPIDER_MODULES = ['mkz.spiders']
 NEWSPIDER_MODULE = 'mkz.spiders'
 
-DUPEFILTER_DEBUG = True
-SCHEDULER_DEBUG = True
+# DUPEFILTER_DEBUG = True
+# SCHEDULER_DEBUG = True
 
 # LOG_LEVEL = 'INFO'
 
@@ -96,8 +96,8 @@ ITEM_PIPELINES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-MONGO_URI = 'mongodb://192.168.44.153:27017/'
+# MONGO_URI = 'mongodb://192.168.44.153:27017/'
 
 COMIC_PUBLISH_URL = 'http://chshcms.cc/index.php/api/receive/comic'
 CHAPTER_PUBLISH_URL = 'http://chshcms.cc/index.php/api/receive/chapter'
-PUBLISH_PWD = '111111'
+PUBLISH_PWD = ''
