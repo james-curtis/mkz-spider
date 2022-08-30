@@ -26,3 +26,14 @@ engine.pause()
 # 恢复
 engine.unpause()
 ```
+
+使用监控
+
+![](https://tva1.sinaimg.cn/large/008d89Swgy1h5oufnd84fj31hc0ps46l.jpg)
+
+注册https://scrapeops.io/拿到 `SCRAPEOPS_API_KEY`
+
+然后在执行抓取命令后面加上 `-s SCRAPEOPS_API_KEY=这里是你的key` 即可。就像下面一样
+```shell
+scrapy crawl mkzSpider -s COMIC_PUBLISH_URL="http://chshcms.cc/index.php/api/receive/comic" -s CHAPTER_PUBLISH_URL="http://chshcms.cc/index.php/api/receive/chapter" -s PUBLISH_PWD="111111" -s SCRAPEOPS_API_KEY="4948e297-23ea-4f50-a670-0cf52c32a8dd" 
+```

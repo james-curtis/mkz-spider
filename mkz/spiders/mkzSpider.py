@@ -1,11 +1,11 @@
-import scrapy
 from mkz.items import *
 from mkz.config import *
-import logging
+
+spider_name = 'mkzSpider'
 
 
 class MkzspiderSpider(scrapy.Spider):
-    name = 'mkzSpider'
+    name = spider_name
     start_urls = ['https://www.mkzhan.com/category/?page=1']
 
     def parse(self, response, **kwargs):

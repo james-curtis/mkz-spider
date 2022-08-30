@@ -15,7 +15,7 @@ NEWSPIDER_MODULE = 'mkz.spiders'
 # DUPEFILTER_DEBUG = True
 # SCHEDULER_DEBUG = True
 
-# LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'INFO'
 
 # DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 
@@ -61,12 +61,17 @@ TELNETCONSOLE_PASSWORD = 'scrapy'
 # DOWNLOADER_MIDDLEWARES = {
 #    'mkz.middlewares.MkzDownloaderMiddleware': 543,
 # }
+DOWNLOADER_MIDDLEWARES = {
+    'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
-# EXTENSIONS = {
-#    'scrapy.extensions.telnet.TelnetConsole': None,
-# }
+EXTENSIONS = {
+    # 'scrapy.extensions.telnet.TelnetConsole': None,
+    'scrapeops_scrapy.extension.ScrapeOpsMonitor': 500,
+}
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
@@ -101,3 +106,4 @@ ITEM_PIPELINES = {
 COMIC_PUBLISH_URL = 'http://chshcms.cc/index.php/api/receive/comic'
 CHAPTER_PUBLISH_URL = 'http://chshcms.cc/index.php/api/receive/chapter'
 PUBLISH_PWD = '111111'
+SCRAPEOPS_API_KEY = ''
