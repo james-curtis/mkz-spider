@@ -31,7 +31,7 @@ engine.unpause()
 
 ![](https://tva1.sinaimg.cn/large/008d89Swgy1h5oufnd84fj31hc0ps46l.jpg)
 
-注册https://scrapeops.io/拿到 `SCRAPEOPS_API_KEY`
+注册 [scrapeops](https://scrapeops.io/) 拿到 `SCRAPEOPS_API_KEY`
 
 然后在执行抓取命令后面加上 `-s SCRAPEOPS_API_KEY=这里是你的key` 即可。就像下面一样
 ```shell
