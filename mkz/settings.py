@@ -100,4 +100,4 @@ ITEM_PIPELINES = {
 
 COMIC_PUBLISH_URL = 'http://chshcms.cc/index.php/api/receive/comic'
 CHAPTER_PUBLISH_URL = 'http://chshcms.cc/index.php/api/receive/chapter'
-PUBLISH_PWD = ''
+PUBLISH_PWD = '111111'
