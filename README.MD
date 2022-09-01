@@ -44,6 +44,10 @@ scrapy crawl mkzSpider -s COMIC_PUBLISH_URL="http://chshcms.cc/index.php/api/rec
 
 ![](https://tva1.sinaimg.cn/large/008d89Swgy1h5p6ewlr8vj311w07sdvn.jpg)
 
+爬完的话大概要请求40万次，时间大概是50分钟
+
+![](https://tva1.sinaimg.cn/large/008d89Swgy1h5p7jghacyj30la0h9wok.jpg)
+
 ## 发布报错
 
 在这个文件中增加两行 `sys/apps/controllers/api/Receive.php` 
